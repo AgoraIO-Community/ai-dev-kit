@@ -91,10 +91,11 @@ The agent reads the standard, maps your codebase, and generates the full
 `docs/ai/` structure — repo card, 8 L1 summaries, deep dives, and the
 `AGENTS.md`/`CLAUDE.md` entry points.
 
-| Command      | What It Does                                                     |
-| ------------ | ---------------------------------------------------------------- |
-| `/docs`      | Generate L0/L1/L2 docs for the repo following the PD standard   |
-| `/docs:test` | Verify docs work — right context loaded at the right level       |
+| Command        | What It Does                                                     |
+| -------------- | ---------------------------------------------------------------- |
+| `/docs`        | Generate L0/L1/L2 docs for the repo following the PD standard   |
+| `/docs:update` | Update existing docs after code changes — only what changed      |
+| `/docs:test`   | Verify docs work — right context loaded at the right level       |
 
 ---
 
