@@ -11,7 +11,7 @@ to follow those practices automatically.
 ## Table of Contents
 
 - [1. AI Documentation Standard](#1-ai-documentation-standard)
-- [2. Skills in This Repo](#2-skills-in-this-repo)
+- [2. Skills](#2-skills)
   - [Install](#install)
   - [/git — Git workflow conventions](#git--git-workflow-conventions)
   - [/docs — Documentation generation](#docs--documentation-generation)
@@ -42,11 +42,11 @@ need:
 Docs live in `docs/ai/` in each repository. Start at L0, load all 8 L1 files
 at session start (they're small), go to L2 only when L1 isn't detailed enough.
 
-The `/docs` skill in this repo generates these docs automatically — see below.
+The `/docs:generate` skill in this repo generates these docs automatically — see below.
 
 ---
 
-## 2. Skills in This Repo
+## 2. Skills
 
 Skills are plain markdown files that teach AI agents specific workflows and
 conventions. The agent follows the rules because the skill instructions say so —
@@ -54,17 +54,49 @@ no hooks, no interceptors, no build steps.
 
 ### Install
 
-Add as a skill dependency for your AI coding tool. For Claude Code:
+Choose the method for your AI coding tool:
+
+**Claude Code**
 
 ```bash
-claude mcp add-skill https://github.com/AgoraIO-Community/ai-dev-kit
+# Install as a plugin (recommended)
+claude plugin add https://github.com/AgoraIO-Community/ai-dev-kit
+
+# Or clone and add commands directory
+git clone https://github.com/AgoraIO-Community/ai-dev-kit.git ~/.ai-dev-kit
 ```
 
-Or clone and reference locally:
+**Cursor**
+
+```bash
+git clone https://github.com/AgoraIO-Community/ai-dev-kit.git ~/.ai-dev-kit
+```
+
+Add to your Cursor settings under plugins or reference the `.cursor-plugin/plugin.json`.
+
+**Gemini CLI**
+
+```bash
+git clone https://github.com/AgoraIO-Community/ai-dev-kit.git ~/.ai-dev-kit
+```
+
+Reference the `gemini-extension.json` or read `GEMINI.md` for context.
+
+**Codex**
+
+```bash
+git clone https://github.com/AgoraIO-Community/ai-dev-kit.git ~/.codex/ai-dev-kit
+mkdir -p ~/.agents/skills
+ln -s ~/.codex/ai-dev-kit/skills ~/.agents/skills/ai-dev-kit
+```
+
+**Any agent (git clone)**
 
 ```bash
 git clone https://github.com/AgoraIO-Community/ai-dev-kit.git
 ```
+
+Point your agent at `skills/ai-dev-kit/SKILL.md` as the entry point.
 
 ### /git — Git workflow conventions
 
@@ -91,11 +123,11 @@ The agent reads the standard, maps your codebase, and generates the full
 `docs/ai/` structure — repo card, 8 L1 summaries, deep dives, and the
 `AGENTS.md`/`CLAUDE.md` entry points.
 
-| Command        | What It Does                                                     |
-| -------------- | ---------------------------------------------------------------- |
-| `/docs`        | Generate L0/L1/L2 docs for the repo following the PD standard   |
-| `/docs:update` | Update existing docs after code changes — only what changed      |
-| `/docs:test`   | Verify docs work — right context loaded at the right level       |
+| Command          | What It Does                                                   |
+| ---------------- | -------------------------------------------------------------- |
+| `/docs:generate` | Generate L0/L1/L2 docs for the repo following the PD standard |
+| `/docs:update`   | Update existing docs after code changes — only what changed    |
+| `/docs:test`     | Verify docs work — right context loaded at the right level     |
 
 ---
 
@@ -138,7 +170,7 @@ A typical workflow combining ai-dev-kit + Superpowers:
 4. `/review` — review the changes
 5. `/git:ship` — commit and push (conventions enforced)
 6. `/git:pr` — create a PR
-7. `/docs` — update repo docs if needed
+7. `/docs:generate` — update repo docs if needed
 
 ---
 
@@ -162,6 +194,3 @@ describes a multi-agent architecture for this:
 The guide covers the full epic lifecycle — discovery, planning, interface
 agreement, parallel implementation, integration testing, and E2E validation —
 with human review gates at each stage.
-
-**Prerequisite:** Repos must have at least L0 and L1 docs (see
-[section 1](#1-ai-documentation-standard)) for the System Agent to read.

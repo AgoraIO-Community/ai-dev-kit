@@ -8,7 +8,7 @@ Generate progressive disclosure documentation for this repository following the 
 
 | Command        | What It Does                                                          |
 | -------------- | --------------------------------------------------------------------- |
-| `/docs`        | Generate L0/L1/L2 docs for the repo following the PD standard        |
+| `/docs:generate` | Generate L0/L1/L2 docs for the repo following the PD standard     |
 | `/docs:update` | Update existing docs after code changes — only touches what changed   |
 | `/docs:test`   | Verify PD docs work correctly — right context at the right level      |
 

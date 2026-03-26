@@ -1,0 +1,6 @@
+{
+  "name": "ai-dev-kit",
+  "description": "Git workflow conventions and documentation generation for AI-assisted development",
+  "version": "1.0.0",
+  "contextFileName": "GEMINI.md"
+}

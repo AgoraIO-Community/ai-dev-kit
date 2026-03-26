@@ -1,15 +1,19 @@
 # Agent Conventions
 
-This repo provides skills (slash commands) for AI-assisted development. The skills are plain markdown files in `skills/`.
+This repo provides skills (slash commands) for AI-assisted development. The skills are plain markdown files — one skill (`ai-dev-kit`) with git and docs sub-skills.
 
 ## Repo Structure
 
-| Path                  | Purpose                                         |
-| --------------------- | ----------------------------------------------- |
-| `skills/git/`         | Git workflow commands (ship, pr, sync)           |
-| `skills/docs/`        | Documentation generation command                 |
-| `README.md`           | Overview and install instructions                |
-| `AGENTS.md`           | Agent conventions (this file)                    |
+| Path                          | Purpose                                          |
+| ----------------------------- | ------------------------------------------------ |
+| `skills/ai-dev-kit/`          | Skill entry point and sub-skills                 |
+| `skills/ai-dev-kit/git/`      | Git workflow commands (ship, pr, sync)            |
+| `skills/ai-dev-kit/docs/`     | Documentation generation commands                |
+| `commands/`                    | Claude Code slash command files                  |
+| `docs/`                        | Standards and guides                             |
+| `.claude-plugin/`              | Claude Code plugin metadata                      |
+| `.cursor-plugin/`              | Cursor plugin metadata                           |
+| `.codex/`                      | Codex install instructions                       |
 
 ## Conventions
 
@@ -19,7 +23,6 @@ This repo provides skills (slash commands) for AI-assisted development. The skil
 
 ## Skills
 
-| Skill           | Entry Point              | Commands                         |
-| --------------- | ------------------------ | -------------------------------- |
-| Git workflow    | `skills/git/SKILL.md`    | `/git:ship`, `/git:pr`, `/git:sync` |
-| Documentation   | `skills/docs/SKILL.md`   | `/docs`, `/docs:update`, `/docs:test` |
+| Skill       | Entry Point                      | Commands                                                          |
+| ----------- | -------------------------------- | ----------------------------------------------------------------- |
+| ai-dev-kit  | `skills/ai-dev-kit/SKILL.md`     | `/git:ship`, `/git:pr`, `/git:sync`, `/docs:generate`, `/docs:update`, `/docs:test` |

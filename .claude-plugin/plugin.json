@@ -1,0 +1,19 @@
+{
+  "name": "ai-dev-kit",
+  "description": "Git workflow conventions and documentation generation for AI-assisted development",
+  "version": "1.0.0",
+  "author": {
+    "name": "AgoraIO Community"
+  },
+  "homepage": "https://github.com/AgoraIO-Community/ai-dev-kit",
+  "repository": "https://github.com/AgoraIO-Community/ai-dev-kit",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "git",
+    "documentation",
+    "progressive-disclosure",
+    "conventions",
+    "workflows"
+  ]
+}
