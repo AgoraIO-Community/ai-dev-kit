@@ -1,8 +1,15 @@
 ---
-description: Generate progressive disclosure documentation for the repo
+description: Generate and test progressive disclosure documentation for the repo
 ---
 
 Generate progressive disclosure documentation for this repository following the [Progressive Disclosure Documentation Standard](https://github.com/AgoraIO-Community/ai-dev-kit/blob/main/docs/progressive-disclosure-standard.md).
+
+## Commands
+
+| Command      | What It Does                                                          |
+| ------------ | --------------------------------------------------------------------- |
+| `/docs`      | Generate L0/L1/L2 docs for the repo following the PD standard        |
+| `/docs:test` | Verify PD docs work correctly — right context at the right level      |
 
 ## Workflow
 

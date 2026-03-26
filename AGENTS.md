@@ -22,4 +22,4 @@ This repo provides skills (slash commands) for AI-assisted development. The skil
 | Skill           | Entry Point              | Commands                         |
 | --------------- | ------------------------ | -------------------------------- |
 | Git workflow    | `skills/git/SKILL.md`    | `/git:ship`, `/git:pr`, `/git:sync` |
-| Documentation   | `skills/docs/SKILL.md`   | `/docs`                          |
+| Documentation   | `skills/docs/SKILL.md`   | `/docs`, `/docs:test`            |
