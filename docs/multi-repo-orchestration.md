@@ -391,81 +391,149 @@ The System Diagram (§3) draws arrows labeled "Task Spec" between agents, but th
 
 For agents on the **same machine** (e.g., multiple Claude Code sessions on one laptop), file-based communication is possible. For agents on **different machines** (different developers, CI runners, cloud environments), you need a network transport: something that can deliver a request to an agent and return its response.
 
-### Transport Options
+### Transport Approaches
 
-| Option | How It Works | Pros | Cons | Best For |
+| Approach | How It Works | Pros | Cons | Best For |
 | --- | --- | --- | --- | --- |
 | **File-based** | Agents read/write to a shared directory or git repo | Auditable, no infra, works offline | Requires shared filesystem, polling-based, slow | Same-machine PoC |
 | **HTTP request/response** | Each agent exposes an HTTP endpoint; System Agent sends requests and receives responses | Simple protocol, standard tooling, works across machines | Requires a server process per agent, port management, auth | Multi-machine coordination |
 | **Message queue** | Agents publish/subscribe via a broker (Redis, NATS, SQS) | Scalable, decoupled, async | Infrastructure overhead, message ordering complexity | Production at scale |
 | **Git-as-transport** | Agents communicate via commits to a coordination repo | Auditable, works across machines, uses existing tooling | Slow (commit/push/pull cycle), merge conflicts | Audit-heavy environments |
 
-### HTTP Transport (Recommended for PoC)
+HTTP is the practical choice for multi-machine coordination. Several open-source projects already implement it.
 
-HTTP request/response is the simplest transport that works across machines. Each agent needs:
+### Existing Projects
 
-1. **A listening endpoint** — a lightweight HTTP server that accepts task requests
-2. **A request/response protocol** — structured JSON messages for task specs, status, and results
-3. **Agent lifecycle management** — something to start agents, keep them running, and handle timeouts
+The landscape of tools that wrap AI coding agents behind HTTP APIs is active and fragmented. Projects differ on three axes: which agents they support, which protocol they speak, and whether they handle multi-agent orchestration or just single-agent wrapping.
 
-#### Message Protocol (Sketch)
+#### Multi-Agent Wrappers
 
-```
-POST /task
-Content-Type: application/json
+These projects support coordinating multiple agents — closest to what this guide requires.
 
-{
-  "task_id": "epic-001-task-003",
-  "type": "implement",
-  "spec": "Add GET /v1/users/:id endpoint returning { id, name, email }",
-  "contract": "...",
-  "repo": "demo-api",
-  "timeout_seconds": 300
-}
-```
+**coder/agentapi** — Universal HTTP API for CLI coding agents. Wraps 12+ agents (Claude Code, Goose, Aider, Gemini CLI, Copilot CLI, Codex, Amp, Cursor, Amazon Q, and more) using an in-memory terminal emulator that injects keystrokes and parses screen output. REST + SSE on port 3284. Each server instance wraps one agent; run multiple instances for multi-agent setups. Experimental ACP (Agent Client Protocol) support. Backed by Coder (the company). The terminal-scraping approach is inherently fragile — agent TUI updates can break message parsing.
 
-```
-200 OK
-Content-Type: application/json
+| | |
+| --- | --- |
+| Stars | ~1,300 |
+| Language | Go |
+| Protocol | Custom REST + SSE, experimental ACP |
+| Agents | 12+ (Claude, Goose, Aider, Gemini, Copilot, Codex, Amp, Cursor, Amazon Q, etc.) |
+| Multi-agent | Multiple instances on different ports |
+| License | MIT |
+| Repo | [github.com/coder/agentapi](https://github.com/coder/agentapi) |
 
-{
-  "task_id": "epic-001-task-003",
-  "status": "completed",
-  "branch": "feat/user-profile",
-  "pr_url": "https://github.com/org/demo-api/pull/42",
-  "test_results": { "passed": 12, "failed": 0, "skipped": 0 },
-  "notes": "Endpoint implemented with input validation. See PR for details."
-}
-```
+**claude-code-by-agents** — Desktop app + API for multi-agent Claude Code orchestration. Hub-and-spoke architecture where an orchestrator decomposes tasks across agents using `@agent-name` routing. Agents communicate via HTTP and file-based data exchange. The only project with first-class multi-agent orchestration built in (task decomposition, dependency management, mixed local/remote agents).
 
-#### What Needs Building
+| | |
+| --- | --- |
+| Stars | ~800 |
+| Language | TypeScript |
+| Protocol | REST between agents |
+| Agents | Claude Code only |
+| Multi-agent | First-class — task decomposition, dependency management, @agent routing |
+| License | MIT |
+| Repo | [github.com/baryhuang/claude-code-by-agents](https://github.com/baryhuang/claude-code-by-agents) |
 
-| Component | What It Does | Exists Today? |
-| --- | --- | --- |
-| Agent HTTP wrapper | Wraps a Claude Code session behind an HTTP endpoint | No — needs development |
-| Task dispatcher | System Agent sends HTTP requests to Repo Agent endpoints | Straightforward with any HTTP client |
-| Agent registry | Maps repo names to agent endpoint URLs | Simple config file or service discovery |
-| Health check | Verifies agents are running before dispatching | Standard HTTP health endpoint |
-| Timeout/retry | Handles agent crashes, network failures, long-running tasks | Standard HTTP client patterns |
+**claude-a2a** — A2A (Google's Agent-to-Agent protocol) server wrapping the Claude CLI. Spawns a long-lived CLI process per session using NDJSON I/O. Multi-agent via config — define agents with different models, permissions, working directories, and budgets. Includes an MCP client so interactive Claude sessions can call remote agents as tools. Auth (master key + JWT), rate limiting, budget tracking, session continuity via `contextId`, systemd service for production.
+
+| | |
+| --- | --- |
+| Stars | Small |
+| Language | TypeScript |
+| Protocol | Google A2A (JSON-RPC + REST), MCP client |
+| Agents | Claude Code only |
+| Multi-agent | Config-based agent definitions, MCP client for agent-to-agent calls |
+| License | — |
+| Repo | [github.com/jcwatson11/claude-a2a](https://github.com/jcwatson11/claude-a2a) |
+
+#### Single-Agent Wrappers (OpenAI-Compatible)
+
+These wrap Claude Code behind an OpenAI-compatible API (`/v1/chat/completions`). Useful as building blocks — you'd run one per Repo Agent and coordinate externally.
+
+**CLIProxyAPI** — Universal CLI-to-API proxy supporting Gemini CLI, Claude Code, Codex, Qwen, and more. Multi-account round-robin load balancing. Go-based with a large ecosystem of downstream projects. The most mature and popular project in this space, but general-purpose rather than orchestration-focused.
+
+| | |
+| --- | --- |
+| Stars | ~20,000 |
+| Language | Go |
+| Protocol | OpenAI / Gemini / Claude / Codex compatible |
+| Agents | Multiple CLI tools (Gemini, Claude, Codex, Qwen, iFlow) |
+| Multi-agent | Load balancing only, no orchestration |
+| License | MIT |
+| Repo | [github.com/router-for-me/CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI) |
+
+**claude-code-openai-wrapper** — Python/FastAPI wrapper using the official Claude Agent SDK. Both OpenAI (`/v1/chat/completions`) and Anthropic (`/v1/messages`) endpoints. Session management, tool control, multi-provider auth (CLI, API key, Bedrock, Vertex). Real-time cost tracking.
+
+| | |
+| --- | --- |
+| Stars | ~460 |
+| Language | Python |
+| Protocol | OpenAI + Anthropic compatible |
+| Agents | Claude Code only |
+| Multi-agent | None — single-agent sessions |
+| License | — |
+| Repo | [github.com/RichardAtCT/claude-code-openai-wrapper](https://github.com/RichardAtCT/claude-code-openai-wrapper) |
+
+**claude-code-api-rs** — High-performance Rust implementation. Connection pooling reuses Claude CLI processes (5-10x faster than sequential spawning). WebSocket bridge, multimodal input, response caching. Published on crates.io as `cc-sdk`.
+
+| | |
+| --- | --- |
+| Stars | ~140 |
+| Language | Rust |
+| Protocol | OpenAI compatible + WebSocket |
+| Agents | Claude Code only |
+| Multi-agent | None — concurrent sessions via connection pool |
+| License | — |
+| Repo | [github.com/ZhangHanDong/claude-code-api-rs](https://github.com/ZhangHanDong/claude-code-api-rs) |
+
+**claude-code-api** — OpenAI-compatible gateway wrapping the Claude CLI binary. Model aliasing and fallback (if Opus 4.6 rejected, retries Opus 4.5). Database-backed sessions.
+
+| | |
+| --- | --- |
+| Stars | ~280 |
+| Language | Python |
+| Protocol | OpenAI compatible |
+| Agents | Claude Code only |
+| Multi-agent | None |
+| License | GPL-3.0 |
+| Repo | [github.com/codingworkflow/claude-code-api](https://github.com/codingworkflow/claude-code-api) |
+
+### Comparison
+
+| Project | Agents Supported | Protocol | Multi-Agent | Approach | Stars |
+| --- | --- | --- | --- | --- | --- |
+| **coder/agentapi** | 12+ (any CLI agent) | REST + SSE | Multiple instances | Terminal scraping | ~1,300 |
+| **claude-code-by-agents** | Claude Code | REST | First-class orchestration | CLI wrapper + orchestrator | ~800 |
+| **claude-a2a** | Claude Code | Google A2A + MCP | Config-based + MCP client | Long-lived CLI process (NDJSON) | Small |
+| **CLIProxyAPI** | Multiple CLIs | OpenAI-compat | Load balancing only | CLI proxy | ~20,000 |
+| **claude-code-openai-wrapper** | Claude Code | OpenAI + Anthropic | None | Official SDK | ~460 |
+| **claude-code-api** | Claude Code | OpenAI-compat | None | CLI binary | ~280 |
+| **claude-code-api-rs** | Claude Code | OpenAI + WebSocket | None | CLI process pool | ~140 |
+
+### Which to Use
+
+For this orchestration guide's purposes — a System Agent coordinating Repo Agents across machines — the requirements are:
+
+1. **HTTP endpoint per agent** — each Repo Agent must be reachable over the network
+2. **Session continuity** — multi-turn conversations within an epic phase
+3. **Working directory isolation** — each agent operates in its own repo
+4. **Status and results** — the System Agent needs structured responses, not just text
+
+**For a same-machine PoC:** `coder/agentapi` is the fastest path. Install the binary, start one instance per repo on different ports, and have the System Agent call their REST APIs. It supports Claude Code and many other agents, and the built-in `/chat` UI helps with debugging.
+
+**For Claude-only multi-machine deployment:** `claude-a2a` is the most complete. It has auth, budgets, session continuity, and an MCP client so agents can call each other. The A2A protocol also provides agent discovery via Agent Cards.
+
+**For multi-agent orchestration out of the box:** `claude-code-by-agents` is the only project with built-in task decomposition and dependency management — closest to the System Agent concept in this guide.
+
+**The gap:** No existing project implements the full epic lifecycle described in §5 — discovery, planning, interface agreement, parallel implementation, integration testing, and E2E validation with human review gates. The transport layer exists; the orchestration logic on top of it does not.
 
 ### Agent Lifecycle
 
-The document previously assumed agents exist and are ready to receive work. In practice:
+Regardless of which transport is chosen, agent lifecycle management is needed:
 
 1. **Who starts agents?** A human, a CI pipeline, or a launcher script. Each Repo Agent needs to be started with access to its repo and its listening port configured.
-2. **Who keeps them running?** For a PoC, a simple process that stays alive while work is in progress. For production, a process manager or container orchestrator.
+2. **Who keeps them running?** For a PoC, a simple process that stays alive while work is in progress. For production, a process manager (systemd, Docker, Kubernetes).
 3. **What happens on failure?** File-based state (plans, contracts, partial results in git branches) enables any new agent session to resume from the last checkpoint. The System Agent should detect unresponsive Repo Agents and either retry or escalate to a human.
-
-### PoC Feasibility
-
-The PoC in §8 is feasible today **only in the same-machine case** — one human running multiple agent sessions on the same laptop, using file-based transport or manual copy-paste coordination.
-
-For **multi-machine PoC**, the HTTP transport above needs to be built first. The minimum viable version is:
-- A simple HTTP server that wraps an agent session
-- A System Agent that can POST task specs and poll for results
-- File-based state for resumability
-
-This is a small but real engineering effort — not a configuration change.
 
 ---
 
