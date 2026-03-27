@@ -26,10 +26,12 @@ This repo contains:
 
 ## Overview
 
-ai-dev-kit installs as a plugin. At session start, a hook injects git
-conventions (lowercase commits, no AI tool names, present tense) so they're
-always active. Skills for git workflows and documentation generation load on
-demand via the Skill tool when you need them.
+ai-dev-kit installs as a plugin. At session start, a hook injects the main
+skill file which sets git conventions (lowercase commits, no AI tool names,
+present tense) and registers the available skills. Git conventions are always
+active. Skills for git workflows (commit, PR, rebase) and progressive
+disclosure documentation (generate, update, verify) load on demand when you
+invoke them.
 
 ---
 
