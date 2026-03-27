@@ -4,17 +4,17 @@ ai-dev-kit provides git conventions and documentation generation as skills for A
 
 ## Repo Structure
 
-| Path                         | Purpose                                        |
-| ---------------------------- | ---------------------------------------------- |
-| `skills/ai-dev-kit/SKILL.md` | entry point — conventions + skill directory    |
-| `skills/ai-dev-kit/git/`     | git workflow skills (ship, pr, sync)           |
-| `skills/ai-dev-kit/docs/`    | documentation skills (generate, update, test)  |
-| `hooks/`                     | session-start hook, platform wrappers          |
-| `docs/`                      | standards (progressive disclosure, multi-repo) |
-| `.claude-plugin/`            | Claude Code plugin config                      |
-| `.cursor-plugin/`            | Cursor plugin config                           |
-| `.codex/`                    | Codex install guide                            |
-| `gemini-extension.json`      | Gemini extension config                        |
+| Path                         | Purpose                                       |
+| ---------------------------- | --------------------------------------------- |
+| `skills/ai-dev-kit/SKILL.md` | entry point — conventions + skill directory   |
+| `skills/ai-dev-kit/git/`     | git workflow skills (ship, pr, sync)          |
+| `skills/ai-dev-kit/docs/`    | documentation skills (generate, update, test) |
+| `hooks/`                     | session-start hook, platform wrappers         |
+| `docs/`                      | documentation standard + orchestration guide  |
+| `.claude-plugin/`            | Claude Code plugin config                     |
+| `.cursor-plugin/`            | Cursor plugin config                          |
+| `.codex/`                    | Codex install guide                           |
+| `gemini-extension.json`      | Gemini extension config                       |
 
 ## Architecture
 

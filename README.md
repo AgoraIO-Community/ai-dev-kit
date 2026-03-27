@@ -1,79 +1,97 @@
 # ai-dev-kit
 
-Git conventions and documentation generation for AI-assisted development. Works with Claude Code, Cursor, Codex, and Gemini.
+Git workflow conventions, documentation generation, and development standards
+for AI-assisted teams. Pairs with
+[Superpowers](https://github.com/obra/superpowers) — ai-dev-kit handles git
+and docs, Superpowers handles the dev workflow (spec, plan, TDD, review).
 
 ## Install
 
-### Claude Code
+**Claude Code**
 
 ```bash
 claude install github.com/BenWeekes/ai-dev-kit
 ```
 
-### Cursor
+**Cursor**
 
 ```bash
 cursor install github.com/BenWeekes/ai-dev-kit
 ```
 
+**Any agent**
+
+```bash
+git clone https://github.com/BenWeekes/ai-dev-kit.git
+```
+
+Point your agent at `skills/ai-dev-kit/SKILL.md` as the entry point.
+
 ## How it works
 
-ai-dev-kit uses a skill-based architecture:
+A session-start hook injects git conventions (lowercase commits, no AI tool
+names, present tense) into every session automatically. Detailed skill
+workflows load on demand via the Skill tool.
 
-1. **Session start** — a hook reads `skills/ai-dev-kit/SKILL.md` and injects git conventions into the session context. These are always active — you don't need to invoke anything.
+## Skills Library
 
-2. **On demand** — detailed workflows (ship, pr, sync, docs) are loaded via the Skill tool when you need them.
+**Git**
 
-### Ambient conventions (always active)
+| Skill | What it does                                           |
+| ----- | ------------------------------------------------------ |
+| ship  | commit staged changes and push to remote               |
+| pr    | create a pull request with generated title and summary |
+| sync  | rebase current branch onto latest main                 |
 
-These rules are injected at session start and apply to every git operation:
+**Docs**
 
-- lowercase commit messages
-- no AI tool names in commits
-- present tense ("add feature", not "added feature")
-- no Co-Authored-By trailers
-- no --no-verify
+| Skill    | What it does                                                 |
+| -------- | ------------------------------------------------------------ |
+| generate | create L0/L1/L2 progressive disclosure docs from scratch     |
+| update   | update existing docs after code changes                      |
+| test     | verify docs give agents the right context at the right level |
 
-### Skills (on demand)
+## AI Documentation Standard
 
-| Skill      | What it does                                      |
-| ---------- | ------------------------------------------------- |
-| `ship`     | commit staged changes and push to remote          |
-| `pr`       | create a pull request from the current branch     |
-| `sync`     | rebase current branch onto latest main            |
-| `generate` | generate progressive disclosure docs from scratch |
-| `update`   | update existing docs after code changes           |
-| `test`     | verify generated docs meet the standard           |
+Every repo should be self-describing for AI agents. The
+[Progressive Disclosure Documentation Standard](docs/progressive-disclosure-standard.md)
+defines a three-level architecture:
 
-## Standards
+| Level  | Name       | What it is                                              | Token budget |
+| ------ | ---------- | ------------------------------------------------------- | ------------ |
+| **L0** | Repo Card  | Identity + L1 index. Always loaded first.               | 300-500      |
+| **L1** | Summaries  | Structured summaries for standard work. 8 files.        | 300-600 each |
+| **L2** | Deep Dives | Full specs and subsystem docs. Loaded only when needed. | No limit     |
 
-ai-dev-kit includes two standards for AI-assisted development:
+The `generate` skill creates these docs automatically for any repo.
 
-- **[Progressive Disclosure Documentation](docs/progressive-disclosure-standard.md)** — a three-level (L0/L1/L2) architecture that makes repos self-describing for AI agents
-- **[Multi-Repo Orchestration](docs/multi-repo-orchestration.md)** — coordination patterns for features that span multiple repos
+## Multi-Repo Orchestration (WIP)
 
-## Using with other skills
+When features span multiple repos, you need coordination across agents. The
+[Multi-Repo Orchestration Guide](docs/multi-repo-orchestration.md) describes
+agent tiers, epic lifecycle, and cross-repo review patterns.
 
-ai-dev-kit pairs well with [Superpowers](https://github.com/obra/superpowers) for a complete workflow:
+## Using with Superpowers
 
-1. spec — capture what you want to build
-2. plan — plan how to build it
-3. tdd — implement with tests
-4. review — review the changes
-5. ship — commit and push (ai-dev-kit conventions enforced)
-6. pr — create a PR
-7. generate — update repo docs if needed
+ai-dev-kit and Superpowers cover different concerns with no overlap:
 
-## Repo structure
+| Concern         | ai-dev-kit             | Superpowers          |
+| --------------- | ---------------------- | -------------------- |
+| Git conventions | ship, pr, sync         | —                    |
+| Documentation   | generate, update, test | —                    |
+| Spec & planning | —                      | spec, plan           |
+| Development     | —                      | tdd, review          |
+| Debugging       | —                      | systematic-debugging |
 
-| Path                 | Purpose                                        |
-| -------------------- | ---------------------------------------------- |
-| `skills/ai-dev-kit/` | skill definitions (SKILL.md + sub-skills)      |
-| `hooks/`             | session-start hook and platform wrappers       |
-| `docs/`              | standards (progressive disclosure, multi-repo) |
-| `.claude-plugin/`    | Claude Code plugin config                      |
-| `.cursor-plugin/`    | Cursor plugin config                           |
-| `.codex/`            | Codex install guide                            |
+A typical workflow:
+
+1. spec — capture what you want to build (Superpowers)
+2. plan — design the approach (Superpowers)
+3. tdd — implement with tests (Superpowers)
+4. review — review the changes (Superpowers)
+5. ship — commit and push (ai-dev-kit)
+6. pr — create a PR (ai-dev-kit)
+7. generate — update repo docs (ai-dev-kit)
 
 ## License
 
