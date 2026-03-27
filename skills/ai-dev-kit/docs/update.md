@@ -7,6 +7,10 @@ description: Update progressive disclosure docs after code changes. Use when the
 
 Update the existing progressive disclosure documentation to reflect recent code changes. This is for repos that already have `docs/ai/` — use `generate` to create from scratch.
 
+## Prerequisites
+
+Check that `docs/ai/L0_repo_card.md` exists. If it does not, tell the user to run `generate` first and stop.
+
 ## Rules
 
 - Only modify docs that are affected by the changes — do not regenerate everything
@@ -30,7 +34,7 @@ Determine the scope of changes to document:
   git log --oneline --since="30 days ago"
   ```
 
-Group changes into: new modules, changed interfaces, new workflows, new gotchas, removed code.
+Group changes into: new modules, changed interfaces, new workflows, new gotchas, deprecated features, dependency changes, removed code.
 
 ### 2. Read current docs
 
@@ -51,12 +55,15 @@ For each change identified in step 1, determine which doc files need updating:
 | New module or package                | `03_code_map.md` — add to directory tree and module map      |
 | New API endpoint or event            | `06_interfaces.md` — add contract                            |
 | Changed API contract                 | `06_interfaces.md` — update contract                         |
+| Deprecated API or feature            | `06_interfaces.md` — mark deprecated, add migration note     |
 | New workflow (deploy, migrate, etc.) | `05_workflows.md` — add step-by-step                         |
 | New environment variable or config   | `01_setup.md` — add to env table                             |
 | Architecture change                  | `02_architecture.md` — update component diagram or data flow |
 | New convention or pattern            | `04_conventions.md` — add pattern                            |
 | New gotcha or incident lesson        | `07_gotchas.md` — add entry                                  |
 | Security model change                | `08_security.md` — update trust boundaries                   |
+| Dependency added or upgraded         | `01_setup.md` — update dependency list                       |
+| Tech stack change                    | `02_architecture.md` — update stack section                  |
 | Module removed                       | `03_code_map.md` — remove entry                              |
 
 ### 4. Read the changed code

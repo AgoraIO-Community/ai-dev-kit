@@ -7,26 +7,35 @@ description: Verify that generated progressive disclosure docs meet the standard
 
 Verify that the progressive disclosure documentation in this repo gives AI agents the right context at the right level — L0+L1 for common tasks, L2 only when depth is needed.
 
-## How It Works
+## Prerequisites
 
-For each test question, launch a fresh sub-agent with access to this repo. The sub-agent should navigate the docs naturally (starting from AGENTS.md or L0). After it answers, check which files it actually read to determine whether the PD loading pattern worked.
+Check that these exist before running tests:
 
-## Rules
+- `docs/ai/L0_repo_card.md`
+- `docs/ai/L1/` directory with at least files 01-08
+- `docs/ai/L1/deep_dives/_index.md`
 
-- Each test question must be answered by a **fresh sub-agent** (no carried-over context)
-- Do NOT tell the sub-agent which docs to read — let it navigate naturally
-- After each answer, record which files the sub-agent read (from its tool use)
-- A test **passes** if the agent got a correct answer AND loaded the right level:
-  - L0+L1 only for routine questions (setup, build, test, conventions)
-  - L0+L1+specific L2 for deep questions (architecture details, edge cases)
-- A test **fails** if:
-  - The agent loaded L2 unnecessarily (wasted context)
-  - The agent gave a wrong or incomplete answer (doc gap)
-  - The agent couldn't find the answer at all (missing coverage)
+If any are missing, stop and tell the user to run `generate` first.
 
 ## Workflow
 
-### 1. Generate test questions
+### 1. Structural checks
+
+Run these quick validations first — fix any failures before proceeding to the expensive sub-agent tests:
+
+- **L0:** exists and is under 50 lines
+- **L1 files:** all 8 exist (01_setup through 08_security), each is 80-200 lines
+- **L1 format:** each starts with a one-line purpose statement, each ends with `## Related Deep Dives`
+- **L1 total:** combined line count is under 1,600
+- **L2 index:** `deep_dives/_index.md` exists and lists all L2 files
+- **L2 format:** each starts with `> **When to Read This:** ...`
+- **Cross-references:** all relative links between L0 → L1 → L2 resolve to existing files
+- **AGENTS.md:** exists at repo root with loading instructions
+- **CLAUDE.md:** exists at repo root and references @AGENTS.md
+
+If structural checks fail, report all failures and stop. Structural issues must be fixed before content testing.
+
+### 2. Generate test questions
 
 Create questions in these categories by reading the repo's actual codebase and recent git history:
 
@@ -60,16 +69,18 @@ Create questions in these categories by reading the repo's actual codebase and r
 
 If `$ARGUMENTS` specifies a focus area, weight questions toward that area.
 
-### 2. Run tests
+### 3. Run tests
 
-For each question:
+For each question, launch a fresh sub-agent with access to the repo:
 
-1. Launch a fresh sub-agent with access to the repo
-2. Ask the question
+1. Give the sub-agent only the question — do NOT tell it which docs to read
+2. Let it navigate naturally (starting from AGENTS.md or L0)
 3. Record: the answer, which files were read, whether the answer was correct
 4. Classify: L0+L1 sufficient, or L2 needed
 
-### 3. Analyze results
+Expect each sub-agent to take 30-60 seconds. Total test run: 5-10 minutes for ~10 questions.
+
+### 4. Analyze results
 
 For each test, determine:
 
@@ -81,7 +92,7 @@ For each test, determine:
 | Wrong/incomplete answer, no L2 exists               | Missing deep dive    | Create the L2 file                      |
 | Agent couldn't find answer at all                   | Missing L1 coverage  | Add to the relevant L1 file             |
 
-### 4. Write results
+### 5. Write results
 
 Save results to `docs/ai/test-results.md`:
 
@@ -131,6 +142,6 @@ Repo: [repo name]
 - [ ] Fix Related Deep Dives link in 02_architecture.md (question N)
 ```
 
-### 5. Fix and retest
+### 6. Fix and retest
 
 If any tests failed, fix the docs and rerun the failing questions only. Update test-results.md with the retest.

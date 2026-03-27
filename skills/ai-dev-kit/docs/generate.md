@@ -27,12 +27,14 @@ Read all markdown files and config/setup files in the repo root first — these 
 2. Identify repo type: api-service, frontend-app, sdk-library, infrastructure, distributed-system, data-pipeline, ml-model
 3. Identify the major modules, packages, or service boundaries
 
+**Module definition:** A module is a top-level directory with cohesive functionality: a service in a distributed system, a package in a monorepo, a major feature grouping in an app (e.g., auth/, api/, storage/), or a namespace in an SDK.
+
 For each major module:
 
 - Read all source files (or a representative set if the module is very large)
-- Summarize: purpose, key abstractions, public interfaces, internal patterns, external dependencies, gotchas (TODO/FIXME/HACK, complex conditionals, retry logic, environment-specific behavior)
+- Summarize: purpose, key abstractions, public interfaces, internal patterns, external dependencies, gotchas (TODO/FIXME/HACK, complex conditionals, retry logic, environment-specific behavior, race conditions, error swallowing, hard-coded values, implicit assumptions)
 
-For large repos, analyze each module as a separate sub-agent task and collect the summaries before proceeding.
+**Delegate to sub-agents if:** The module has >15 source files OR reading all files would exceed 50k tokens. Create a task for each module, collect summaries, then proceed.
 
 ### 4. Synthesize and plan
 
@@ -44,6 +46,8 @@ Using the module summaries:
 - Compile gotchas from all modules
 - List key topics for each L1 file (3-5 per file)
 - Identify 2-4 L2 deep dive topics
+
+**L2 criteria:** Create a deep dive if the topic is >100 lines in L1 alone, OR it has complex multi-step sequences, OR it's frequently modified and needs isolated maintenance, OR it requires code examples and diagrams.
 
 ### 5. Generate docs
 
@@ -62,6 +66,8 @@ Also create or update:
 
 ### 6. Verify
 
+**Structural checks:**
+
 - All cross-references resolve (relative links between L0 → L1 → L2)
 - L0 is under 50 lines
 - Each L1 file is 80-200 lines
@@ -70,3 +76,8 @@ Also create or update:
 - Total L1 is under 1,600 lines
 - L2 files start with `> **When to Read This:** ...`
 - CLAUDE.md references @AGENTS.md
+
+**Content self-test:**
+
+- Run a spot-check query against the generated docs: "How do I [common task]?" Verify the answer path is clear from L0 → L1 → L2.
+- If the query requires jumping between >3 files or the answer is unclear, revise cross-references or add an L2 guide.
