@@ -1,6 +1,9 @@
 ---
-description: Commit staged changes and push to remote
+name: ship
+description: Commit staged changes and push to remote. Use when the user says "ship it", "commit and push", or wants to send changes to the remote.
 ---
+
+# ship
 
 Commit the currently staged changes and push them to the remote.
 
@@ -9,11 +12,6 @@ Commit the currently staged changes and push them to the remote.
 - Do NOT add a Co-Authored-By trailer
 - Do NOT modify git config (user.name, user.email)
 - Do NOT skip hooks (no --no-verify)
-
-## Commit Message Conventions
-
-- lowercase start, present tense, no AI tool names
-- one concise line summarizing the change
 
 ## Workflow
 

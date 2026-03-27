@@ -1,22 +1,17 @@
 ---
-description: Generate and test progressive disclosure documentation for the repo
+name: generate
+description: Generate progressive disclosure documentation for a repo from scratch. Use when the user wants to create docs, generate docs, or run the docs generator on a repo that has no existing docs/ai/ directory.
 ---
 
-Generate progressive disclosure documentation for this repository following the [Progressive Disclosure Documentation Standard](https://github.com/AgoraIO-Community/ai-dev-kit/blob/main/docs/progressive-disclosure-standard.md).
+# generate
 
-## Commands
-
-| Command        | What It Does                                                          |
-| -------------- | --------------------------------------------------------------------- |
-| `/docs:generate` | Generate L0/L1/L2 docs for the repo following the PD standard     |
-| `/docs:update` | Update existing docs after code changes — only touches what changed   |
-| `/docs:test`   | Verify PD docs work correctly — right context at the right level      |
+Generate progressive disclosure documentation for this repository following the progressive disclosure standard.
 
 ## Workflow
 
 ### 1. Read the standard
 
-Fetch the [Progressive Disclosure Documentation Standard](https://github.com/AgoraIO-Community/ai-dev-kit/blob/main/docs/progressive-disclosure-standard.md) to understand the L0/L1/L2 architecture, file naming rules, token budgets, and content density targets.
+Read `docs/progressive-disclosure-standard.md` to understand the L0/L1/L2 architecture, file naming rules, token budgets, and content density targets.
 
 ### 2. Read existing project context
 

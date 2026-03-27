@@ -1,31 +1,41 @@
-# AI-Dev Kit
+---
+name: ai-dev-kit
+description: Git conventions and documentation generation for AI-assisted development. Enforces lowercase commits, no AI tool names, present tense. Use when committing, pushing, creating PRs, rebasing, or generating repo documentation.
+---
 
-Git workflow conventions and documentation generation skills for AI-assisted development.
+# ai-dev-kit
 
-## Skills
+Git conventions and progressive disclosure documentation for AI-assisted development.
 
-### Git Workflow
+## Git Conventions (always active)
 
-Commit, push, and PR commands that enforce consistent conventions. See [git/SKILL.md](git/SKILL.md).
+These rules apply to every commit in repos that install ai-dev-kit:
 
-| Command      | What It Does                                                             |
-| ------------ | ------------------------------------------------------------------------ |
-| `/git:ship`  | Commit staged changes and push (enforces conventions)                    |
-| `/git:pr`    | Create a PR from current branch to main with generated title and summary |
-| `/git:sync`  | Pull latest from main, rebase current branch on top                      |
+- **Lowercase start** — commit messages begin with a lowercase letter
+- **No AI tool names** — never mention claude, cursor, copilot, cody, aider, gemini, codex, chatgpt, or gpt-3/4
+- **Present tense** — "add feature", not "added feature"
+- **No Co-Authored-By trailers** — omit AI attribution lines
+- **No --no-verify** — let git hooks run normally
+- **No git config changes** — do not modify user.name or user.email
 
-### Documentation
+## Available Skills
 
-Generate, update, and test progressive disclosure documentation. See [docs/SKILL.md](docs/SKILL.md).
+### git
 
-| Command        | What It Does                                                     |
-| -------------- | ---------------------------------------------------------------- |
-| `/docs:generate` | Generate L0/L1/L2 docs for the repo following the PD standard |
-| `/docs:update` | Update existing docs after code changes — only what changed      |
-| `/docs:test`   | Verify docs work — right context loaded at the right level       |
+Git workflow skills for committing, pushing, PRs, and rebasing.
 
-## Conventions
+| Skill  | Description                                   |
+| ------ | --------------------------------------------- |
+| `ship` | commit staged changes and push to remote      |
+| `pr`   | create a pull request from the current branch |
+| `sync` | rebase current branch onto latest main        |
 
-- **Commit messages:** lowercase start, present tense, no AI tool names, no Co-Authored-By
-- **PR titles:** lowercase start, under 70 characters
-- **Documentation:** follows the [Progressive Disclosure Documentation Standard](https://github.com/AgoraIO-Community/ai-dev-kit/blob/main/docs/progressive-disclosure-standard.md)
+### docs
+
+Documentation generation following the progressive disclosure standard.
+
+| Skill      | Description                                                 |
+| ---------- | ----------------------------------------------------------- |
+| `generate` | generate L0/L1/L2 docs for the repo from scratch            |
+| `update`   | update existing docs after code changes — only what changed |
+| `test`     | verify generated docs meet the standard                     |

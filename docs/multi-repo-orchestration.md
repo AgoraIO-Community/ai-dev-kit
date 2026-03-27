@@ -97,11 +97,11 @@ user-api (provider) → user-sdk (consumer) → web-app (consumer)
 
 ## Shared Conventions
 
-| Convention     | Value                                  |
-| -------------- | -------------------------------------- |
-| API versioning | URL path prefix (`/v1/`)               |
-| Auth mechanism | JWT                                    |
-| Error format   | `{ error: { code, message } }`         |
+| Convention     | Value                          |
+| -------------- | ------------------------------ |
+| API versioning | URL path prefix (`/v1/`)       |
+| Auth mechanism | JWT                            |
+| Error format   | `{ error: { code, message } }` |
 ```
 
 The repo registry can be populated by scraping L0 Identity Blocks from each repo's PD docs. Shared conventions are maintained manually.
@@ -114,15 +114,15 @@ An "epic" is a cross-repo feature requiring coordinated changes across two or mo
 
 ### Phases
 
-| Phase | Name                | Who                        | What Happens                                                          |
-| ----- | ------------------- | -------------------------- | --------------------------------------------------------------------- |
-| 1     | Discovery           | System Agent               | Load System Card, identify affected repos, read their L0/L1 docs     |
-| 2     | Planning            | System Agent               | Produce an Epic Plan: per-repo tasks, execution order, interfaces     |
-| 3     | Interface Agreement | System Agent + Repo Agents | Review and agree on interface contracts before code is written        |
-| 4     | Implementation      | Repo Agents (parallel)     | Each agent implements its task using TDD, constrained by contracts    |
-| 5     | Integration         | System Agent + Repo Agents | Cross-repo contract tests, integration verification                   |
-| 6     | E2E Validation      | E2E Validator              | Test the integrated system through browser/UI                         |
-| 7     | Deploy              | Human                      | Production deployment per existing team process                       |
+| Phase | Name                | Who                        | What Happens                                                       |
+| ----- | ------------------- | -------------------------- | ------------------------------------------------------------------ |
+| 1     | Discovery           | System Agent               | Load System Card, identify affected repos, read their L0/L1 docs   |
+| 2     | Planning            | System Agent               | Produce an Epic Plan: per-repo tasks, execution order, interfaces  |
+| 3     | Interface Agreement | System Agent + Repo Agents | Review and agree on interface contracts before code is written     |
+| 4     | Implementation      | Repo Agents (parallel)     | Each agent implements its task using TDD, constrained by contracts |
+| 5     | Integration         | System Agent + Repo Agents | Cross-repo contract tests, integration verification                |
+| 6     | E2E Validation      | E2E Validator              | Test the integrated system through browser/UI                      |
+| 7     | Deploy              | Human                      | Production deployment per existing team process                    |
 
 ### Review Gates
 
@@ -140,10 +140,10 @@ Front-load reviews — a wrong interface contract discovered during implementati
 
 The System Agent specifies _what_ needs to happen. The Repo Agent decides _how_.
 
-| System Agent Says                                          | Repo Agent Decides                                        |
-| ---------------------------------------------------------- | --------------------------------------------------------- |
-| "Add a `/users` endpoint returning `{ id, name, email }`"  | Route structure, controller design, model layer           |
-| "Expose a `getUser(id)` method in the SDK"                 | Method signature, error handling, internal implementation |
+| System Agent Says                                         | Repo Agent Decides                                        |
+| --------------------------------------------------------- | --------------------------------------------------------- |
+| "Add a `/users` endpoint returning `{ id, name, email }`" | Route structure, controller design, model layer           |
+| "Expose a `getUser(id)` method in the SDK"                | Method signature, error handling, internal implementation |
 
 ### Cross-Repo Code Review
 
@@ -200,15 +200,15 @@ No special orchestration framework needs to be built. You write the System Agent
 
 ### Existing Projects
 
-| Project | Agents | Protocol | Multi-Agent | Stars | Repo |
-| --- | --- | --- | --- | --- | --- |
-| **coder/agentapi** | 12+ (Claude, Goose, Aider, Gemini, Copilot, etc.) | REST + SSE | Multiple instances | ~1,300 | [coder/agentapi](https://github.com/coder/agentapi) |
-| **claude-code-by-agents** | Claude Code | REST | First-class orchestration | ~800 | [baryhuang/claude-code-by-agents](https://github.com/baryhuang/claude-code-by-agents) |
-| **claude-a2a** | Claude Code | Google A2A + MCP | Config-based + MCP client | Small | [jcwatson11/claude-a2a](https://github.com/jcwatson11/claude-a2a) |
-| **CLIProxyAPI** | Multiple CLIs | OpenAI-compat | Load balancing only | ~20,000 | [router-for-me/CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI) |
-| **claude-code-openai-wrapper** | Claude Code | OpenAI + Anthropic | None | ~460 | [RichardAtCT/claude-code-openai-wrapper](https://github.com/RichardAtCT/claude-code-openai-wrapper) |
-| **claude-code-api** | Claude Code | OpenAI-compat | None | ~280 | [codingworkflow/claude-code-api](https://github.com/codingworkflow/claude-code-api) |
-| **claude-code-api-rs** | Claude Code | OpenAI + WebSocket | None | ~140 | [ZhangHanDong/claude-code-api-rs](https://github.com/ZhangHanDong/claude-code-api-rs) |
+| Project                        | Agents                                            | Protocol           | Multi-Agent               | Stars   | Repo                                                                                                |
+| ------------------------------ | ------------------------------------------------- | ------------------ | ------------------------- | ------- | --------------------------------------------------------------------------------------------------- |
+| **coder/agentapi**             | 12+ (Claude, Goose, Aider, Gemini, Copilot, etc.) | REST + SSE         | Multiple instances        | ~1,300  | [coder/agentapi](https://github.com/coder/agentapi)                                                 |
+| **claude-code-by-agents**      | Claude Code                                       | REST               | First-class orchestration | ~800    | [baryhuang/claude-code-by-agents](https://github.com/baryhuang/claude-code-by-agents)               |
+| **claude-a2a**                 | Claude Code                                       | Google A2A + MCP   | Config-based + MCP client | Small   | [jcwatson11/claude-a2a](https://github.com/jcwatson11/claude-a2a)                                   |
+| **CLIProxyAPI**                | Multiple CLIs                                     | OpenAI-compat      | Load balancing only       | ~20,000 | [router-for-me/CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI)                           |
+| **claude-code-openai-wrapper** | Claude Code                                       | OpenAI + Anthropic | None                      | ~460    | [RichardAtCT/claude-code-openai-wrapper](https://github.com/RichardAtCT/claude-code-openai-wrapper) |
+| **claude-code-api**            | Claude Code                                       | OpenAI-compat      | None                      | ~280    | [codingworkflow/claude-code-api](https://github.com/codingworkflow/claude-code-api)                 |
+| **claude-code-api-rs**         | Claude Code                                       | OpenAI + WebSocket | None                      | ~140    | [ZhangHanDong/claude-code-api-rs](https://github.com/ZhangHanDong/claude-code-api-rs)               |
 
 ### Which to Use
 

@@ -1,8 +1,11 @@
 ---
-description: Update progressive disclosure docs after code changes
+name: update
+description: Update progressive disclosure docs after code changes. Use when the user wants to update existing docs, refresh docs, or sync docs with recent code changes.
 ---
 
-Update the existing progressive disclosure documentation to reflect recent code changes. This is for repos that already have `docs/ai/` — use `/docs` to generate from scratch.
+# update
+
+Update the existing progressive disclosure documentation to reflect recent code changes. This is for repos that already have `docs/ai/` — use `generate` to create from scratch.
 
 ## Rules
 
@@ -43,18 +46,18 @@ Do NOT read L2 files yet — only read them if a change directly affects a deep 
 
 For each change identified in step 1, determine which doc files need updating:
 
-| Change Type | Update |
-| --- | --- |
-| New module or package | `03_code_map.md` — add to directory tree and module map |
-| New API endpoint or event | `06_interfaces.md` — add contract |
-| Changed API contract | `06_interfaces.md` — update contract |
-| New workflow (deploy, migrate, etc.) | `05_workflows.md` — add step-by-step |
-| New environment variable or config | `01_setup.md` — add to env table |
-| Architecture change | `02_architecture.md` — update component diagram or data flow |
-| New convention or pattern | `04_conventions.md` — add pattern |
-| New gotcha or incident lesson | `07_gotchas.md` — add entry |
-| Security model change | `08_security.md` — update trust boundaries |
-| Module removed | `03_code_map.md` — remove entry |
+| Change Type                          | Update                                                       |
+| ------------------------------------ | ------------------------------------------------------------ |
+| New module or package                | `03_code_map.md` — add to directory tree and module map      |
+| New API endpoint or event            | `06_interfaces.md` — add contract                            |
+| Changed API contract                 | `06_interfaces.md` — update contract                         |
+| New workflow (deploy, migrate, etc.) | `05_workflows.md` — add step-by-step                         |
+| New environment variable or config   | `01_setup.md` — add to env table                             |
+| Architecture change                  | `02_architecture.md` — update component diagram or data flow |
+| New convention or pattern            | `04_conventions.md` — add pattern                            |
+| New gotcha or incident lesson        | `07_gotchas.md` — add entry                                  |
+| Security model change                | `08_security.md` — update trust boundaries                   |
+| Module removed                       | `03_code_map.md` — remove entry                              |
 
 ### 4. Read the changed code
 

@@ -1,22 +1,21 @@
 {
   "name": "ai-dev-kit",
-  "displayName": "AI-Dev Kit",
-  "description": "Git workflow conventions and documentation generation for AI-assisted development",
-  "version": "1.0.0",
+  "displayName": "ai-dev-kit",
+  "description": "Git conventions and documentation generation for AI-assisted development",
+  "version": "1.1.0",
   "author": {
-    "name": "AgoraIO Community"
+    "name": "Ben Weekes"
   },
-  "homepage": "https://github.com/AgoraIO-Community/ai-dev-kit",
-  "repository": "https://github.com/AgoraIO-Community/ai-dev-kit",
+  "homepage": "https://github.com/BenWeekes/ai-dev-kit",
+  "repository": "https://github.com/BenWeekes/ai-dev-kit",
   "license": "MIT",
   "keywords": [
     "skills",
     "git",
     "documentation",
     "progressive-disclosure",
-    "conventions",
-    "workflows"
+    "conventions"
   ],
   "skills": "./skills/",
-  "commands": "./commands/"
+  "hooks": "./hooks/hooks-cursor.json"
 }

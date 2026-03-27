@@ -1,6 +1,9 @@
 ---
-description: Test that progressive disclosure docs work correctly
+name: test
+description: Verify that generated progressive disclosure docs meet the standard. Use when the user wants to check doc quality or validate documentation.
 ---
+
+# test
 
 Verify that the progressive disclosure documentation in this repo gives AI agents the right context at the right level — L0+L1 for common tasks, L2 only when depth is needed.
 
@@ -28,24 +31,29 @@ For each test question, launch a fresh sub-agent with access to this repo. The s
 Create questions in these categories by reading the repo's actual codebase and recent git history:
 
 **Setup & Build** — can an agent set up and build this project from docs alone?
+
 - How do I install dependencies and build this project?
 - What environment variables are required?
 - What's the minimum system requirement?
 
 **Test & Run** — can an agent run and test the project?
+
 - How do I run the test suite?
 - How do I start the project locally?
 
 **Conventions** — does the agent know the project's patterns?
+
 - What naming conventions does this project use?
 - How should I handle errors in this codebase?
 
 **Development** — can an agent implement a feature?
+
 - Read `git log --oneline --since="3 months ago"` to find 2-3 recent features
 - For each, write a question like: "How would I add a similar feature to [area]?"
 - These should require understanding architecture, not just setup
 
 **Deep Dive** — questions that should require L2
+
 - Pick a complex subsystem and ask about its internals
 - Ask about an edge case or non-obvious behavior
 - These should only be answerable with L2 detail
@@ -65,13 +73,13 @@ For each question:
 
 For each test, determine:
 
-| Result | Meaning | Action |
-| --- | --- | --- |
-| Correct answer, right level loaded | PD docs working | None |
-| Correct answer, L2 loaded unnecessarily | L1 summary too thin | Expand the relevant L1 section |
+| Result                                              | Meaning              | Action                                  |
+| --------------------------------------------------- | -------------------- | --------------------------------------- |
+| Correct answer, right level loaded                  | PD docs working      | None                                    |
+| Correct answer, L2 loaded unnecessarily             | L1 summary too thin  | Expand the relevant L1 section          |
 | Wrong/incomplete answer, L2 exists but wasn't found | Bad cross-references | Fix `## Related Deep Dives` links in L1 |
-| Wrong/incomplete answer, no L2 exists | Missing deep dive | Create the L2 file |
-| Agent couldn't find answer at all | Missing L1 coverage | Add to the relevant L1 file |
+| Wrong/incomplete answer, no L2 exists               | Missing deep dive    | Create the L2 file                      |
+| Agent couldn't find answer at all                   | Missing L1 coverage  | Add to the relevant L1 file             |
 
 ### 4. Write results
 
@@ -96,20 +104,24 @@ Repo: [repo name]
 
 ### Setup & Build
 
-| # | Question | Answer Correct? | Files Read | Level Loaded | Result |
-|---|----------|-----------------|------------|--------------|--------|
-| 1 | How do I build? | Yes | L0, 01_setup | L0+L1 | Pass |
+| #   | Question        | Answer Correct? | Files Read   | Level Loaded | Result |
+| --- | --------------- | --------------- | ------------ | ------------ | ------ |
+| 1   | How do I build? | Yes             | L0, 01_setup | L0+L1        | Pass   |
 
 ### Test & Run
+
 ...
 
 ### Conventions
+
 ...
 
 ### Development
+
 ...
 
 ### Deep Dive
+
 ...
 
 ## Recommended Fixes

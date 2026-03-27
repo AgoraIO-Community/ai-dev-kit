@@ -1,19 +1,25 @@
-# Git Workflow Conventions
+---
+name: git
+description: Git workflow skills — commit, push, PR, rebase. Use when the user wants to ship code, create a pull request, or sync with main.
+---
 
-This skill provides git commands that enforce consistent conventions across AI-assisted development.
+# git
 
-## Commit Message Rules
+Git workflow skills that enforce ai-dev-kit commit conventions.
 
-- **lowercase start** — first character must be lowercase
-- **present tense** — "add feature" not "added feature"
-- **no AI tool names** — no mentions of claude, cursor, copilot, cody, aider, gemini, codex, chatgpt, gpt-3, gpt-4
-- **no Co-Authored-By** — do not add Co-Authored-By trailers
-- **concise** — one line summarizing the change
+## Conventions
 
-## Commands
+All git skills enforce these rules:
 
-| Command     | What It Does                                                             |
-| ----------- | ------------------------------------------------------------------------ |
-| `/git:ship` | Commit staged changes and push (enforces conventions above)              |
-| `/git:pr`   | Create a PR from current branch to main with generated title and summary |
-| `/git:sync` | Pull latest from main, rebase current branch on top                      |
+- lowercase start, present tense, no AI tool names
+- no Co-Authored-By trailers
+- no --no-verify (let hooks run)
+- no git config changes
+
+## Skills
+
+| Skill  | Description                                   |
+| ------ | --------------------------------------------- |
+| `ship` | commit staged changes and push to remote      |
+| `pr`   | create a pull request from the current branch |
+| `sync` | rebase current branch onto latest main        |
