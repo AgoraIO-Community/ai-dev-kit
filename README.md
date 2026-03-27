@@ -1,6 +1,6 @@
 # ai-dev-kit
 
-A practical guide and toolkit for consistent AI-assisted development. Works with
+A practical guide and skill for consistent AI-assisted development. Works with
 any AI coding agent — the practices are about how your team works, not which
 tool you use.
 
@@ -10,12 +10,22 @@ to follow those practices automatically.
 
 ## Table of Contents
 
-- [Install](#install)
 - [How it works](#how-it-works)
+- [Install](#install)
 - [Skills Library](#skills-library)
 - [AI Documentation Standard](#ai-documentation-standard)
 - [Multi-Repo Orchestration (WIP)](#multi-repo-orchestration-wip)
 - [Using with Superpowers](#using-with-superpowers)
+
+---
+
+## How it works
+
+A session-start hook injects git conventions (lowercase commits, no AI tool
+names, present tense) into every session automatically. Documentation skills
+generate [progressive disclosure docs](#ai-documentation-standard) that make
+repos self-describing for AI agents. Detailed skill workflows load on demand
+via the Skill tool.
 
 ---
 
@@ -41,11 +51,7 @@ git clone https://github.com/BenWeekes/ai-dev-kit.git
 
 Point your agent at `skills/ai-dev-kit/SKILL.md` as the entry point.
 
-## How it works
-
-A session-start hook injects git conventions (lowercase commits, no AI tool
-names, present tense) into every session automatically. Detailed skill
-workflows load on demand via the Skill tool.
+---
 
 ## Skills Library
 
