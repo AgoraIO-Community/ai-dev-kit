@@ -73,9 +73,12 @@ If `$ARGUMENTS` specifies a focus area, weight questions toward that area.
 
 For each question, launch a fresh sub-agent with access to the repo:
 
-1. Give the sub-agent only the question — do NOT tell it which docs to read
+1. Give the sub-agent only the question plus this instruction:
+   "After answering, list every file you read to reach your answer."
+   Do NOT tell it which docs to read.
 2. Let it navigate naturally (starting from AGENTS.md or L0)
-3. Record: the answer, which files were read, whether the answer was correct
+3. From the sub-agent's file list, record: the answer, which files were
+   read, whether the answer was correct
 4. Classify: L0+L1 sufficient, or L2 needed
 
 Expect each sub-agent to take 30-60 seconds. Total test run: 5-10 minutes for ~10 questions.
