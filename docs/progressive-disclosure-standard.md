@@ -1028,8 +1028,9 @@ Create files one at a time:
    all marked "To be created." No content files.
 5. `AGENTS.md` at repo root — Use the expanded template from section 4.7
    (How to Load, Git Conventions, Doc Commands).
-6. `CLAUDE.md` at repo root — References @AGENTS.md. If it already exists, add
-   the @ reference rather than replacing existing content.
+6. `CLAUDE.md` (optional, Claude Code only) — If the repo uses Claude Code,
+   create or update `CLAUDE.md` to reference @AGENTS.md. If it already exists,
+   add the reference rather than replacing existing content.
 
 ## Quality Checklist
 
@@ -1041,7 +1042,7 @@ Create files one at a time:
 
 **AGENTS.md:** Exists at repo root. Has How to Load, Git Conventions, and Doc Commands sections.
 
-**CLAUDE.md:** Exists at repo root. References @AGENTS.md.
+**CLAUDE.md** (if present): References @AGENTS.md.
 ````
 
 ---
@@ -1088,7 +1089,7 @@ Create files one at a time:
 2. **Generate** — Copy prompt from Section 6 into an AI agent with repo access
 3. **Review** — Verify architecture, interfaces, workflows, gotchas for accuracy
 4. **Fill gaps** — Add incident-learned gotchas, deployment runbooks, tribal knowledge
-5. **Integrate** — Create `AGENTS.md` + `CLAUDE.md` at repo root, add note to `README.md`
+5. **Integrate** — Create `AGENTS.md` at repo root (add `CLAUDE.md` if using Claude Code), add note to `README.md`
 6. **Maintain** — Update `docs/ai/` when code changes, update `last_reviewed` in L0
 7. **Monitor** (optional) — CI freshness check, track L2 load frequency
 

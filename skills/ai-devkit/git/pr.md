@@ -57,7 +57,7 @@ If `$ARGUMENTS` includes text beyond the base branch (e.g., "pr main fix auth bu
 
 ### 7. Create the PR
 
-Use `gh pr create --title "..." --body "$(cat <<'EOF' ... EOF)"` with a HEREDOC to create the pull request. This ensures proper formatting.
+Use `gh pr create --base <base> --title "..." --body "$(cat <<'EOF' ... EOF)"` with a HEREDOC to create the pull request. The `--base` flag ensures the PR targets the correct base branch from step 1, not GitHub's default.
 
 Return the PR URL when done.
 

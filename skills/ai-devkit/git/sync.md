@@ -37,9 +37,9 @@ If none exist, report error and stop.
 
 Run `git rev-parse --abbrev-ref HEAD`.
 
-If on main/master/develop, switch strategy:
+If the current branch matches the detected `<base>` from step 2, switch strategy:
 
-- Run `git pull origin <branch>`
+- Run `git pull origin <base>`
 - Report number of new commits if any
 - Skip rebase steps
 
