@@ -7,6 +7,7 @@ development. Works with any AI coding agent.
 
 - [What it does](#what-it-does)
 - [Quick start](#quick-start)
+- [Review docs](#review-docs)
 - [Just want git conventions?](#just-want-git-conventions)
 - [Install (optional)](#install-optional)
 - [Skills](#skills)
@@ -79,6 +80,37 @@ When finished:
 2. Call out any assumptions, gaps, or ambiguous areas.
 3. Commit with: docs: add progressive disclosure documentation
 4. Push and create a PR.
+````
+
+## Review docs
+
+After docs are generated, use a second agent session to review the quality.
+This prompt is read-only — it reports findings without changing files.
+
+````
+Review this repo's progressive disclosure docs and provide feedback only.
+Do not change files.
+
+Read from the local ai-devkit clone:
+
+1. skills/ai-devkit/docs/test.md — the test workflow
+2. docs/progressive-disclosure-standard.md — the full standard
+
+Clone URL: https://github.com/AgoraIO-Community/ai-devkit.git
+
+Do this:
+
+1. Read docs/ai/test-results.md.
+2. Read the full docs/ai/ tree.
+3. Compare the docs to the real codebase.
+4. Use git log --oneline -30 to propose 3-5 additional test questions
+   based on real recent changes.
+5. Read 2-3 complex or under-documented source files and assess whether
+   the docs cover them well.
+6. Report gaps, inaccuracies, weak test coverage, and recommended new
+   test cases.
+
+Do not edit docs, do not update test-results.md, and do not commit.
 ````
 
 ### Just want git conventions?
